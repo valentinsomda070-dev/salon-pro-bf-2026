@@ -1,0 +1,2540 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SalonPro BF</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+ margin:0;
+ font-family:Arial,Helvetica,sans-serif;
+ background:#f3f4f6;
+ color:#111827
+}
+
+header{
+ background:#111827;
+ color:white;
+ padding:18px;
+ text-align:center;
+ position:sticky;
+ top:0;
+ z-index:10
+}
+
+header h1{
+ margin:0;
+ font-size:25px
+}
+
+header small{
+ opacity:.8
+}
+
+main{
+ width:100%;
+ max-width:850px;
+ margin:auto;
+ padding:15px
+}
+
+.page{display:none}
+.active{display:block}
+
+.card{
+ background:white;
+ border-radius:16px;
+ padding:20px;
+ margin:15px 0;
+ box-shadow:0 5px 18px rgba(0,0,0,.08)
+}
+
+h2,h3{margin-top:0}
+
+input,textarea,select,button{
+ width:100%;
+ padding:13px;
+ margin:6px 0;
+ border-radius:9px;
+ font-size:15px
+}
+
+input,textarea,select{
+ border:1px solid #d1d5db;
+ background:white
+}
+
+button{
+ border:0;
+ background:#111827;
+ color:white;
+ font-weight:bold;
+ cursor:pointer
+}
+
+button:hover{
+ opacity:.9
+}
+
+.green{background:#15803d}
+.blue{background:#2563eb}
+.red{background:#dc2626}
+.orange{background:#ea580c}
+.gray{background:#6b7280}
+
+.item{
+ border:1px solid #e5e7eb;
+ padding:14px;
+ border-radius:12px;
+ margin:9px 0;
+ background:#fafafa
+}
+
+.stat{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:10px
+}
+
+.statBox{
+ background:#f9fafb;
+ border-radius:12px;
+ padding:16px;
+ text-align:center;
+ border:1px solid #eee
+}
+
+.statBox strong{
+ display:block;
+ font-size:25px;
+ margin-top:5px
+}
+
+.badge{
+ display:inline-block;
+ padding:5px 9px;
+ border-radius:20px;
+ font-size:12px;
+ font-weight:bold
+}
+
+.on{
+ background:#dcfce7;
+ color:#166534
+}
+
+.off{
+ background:#fee2e2;
+ color:#991b1b
+}
+
+.linkbox{
+ background:#f3f4f6;
+ padding:10px;
+ border-radius:8px;
+ word-break:break-all;
+ font-size:13px
+}
+
+#msg{
+ display:none;
+ position:fixed;
+ left:10px;
+ right:10px;
+ bottom:15px;
+ z-index:100;
+ color:white;
+ padding:14px;
+ border-radius:10px;
+ text-align:center;
+ font-weight:bold
+}
+
+.topnav{
+ display:flex;
+ gap:8px;
+ flex-wrap:wrap
+}
+
+.topnav button{
+ width:auto;
+ flex:1
+}
+
+.logo{
+ font-size:50px;
+ text-align:center
+}
+
+.center{text-align:center}
+
+hr{
+ border:0;
+ border-top:1px solid #eee;
+ margin:20px 0
+}
+
+.empty{
+ text-align:center;
+ color:#6b7280;
+ padding:15px
+}
+
+.small{
+ font-size:13px;
+ color:#6b7280
+}
+
+.danger{
+ color:#b91c1c
+}
+
+.success{
+ color:#166534
+}
+
+@media(max-width:500px){
+ .stat{grid-template-columns:1fr 1fr}
+ .card{padding:15px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>💈 SalonPro BF</h1>
+<small>Gestion professionnelle des salons de coiffure</small>
+</header>
+
+<div id="msg"></div>
+
+<main>
+
+<!-- ACCUEIL -->
+<section id="home" class="page active">
+
+<div class="card center">
+<div class="logo">💈</div>
+
+<h2>Bienvenue sur SalonPro BF</h2>
+
+<p>
+La plateforme qui permet aux salons de coiffure
+de présenter leurs services et recevoir des réservations
+en ligne.
+</p>
+
+<button class="green" onclick="show('register')">
+🏪 Créer mon salon
+</button>
+
+<button class="blue" onclick="show('login')">
+💈 Espace Salon de coiffure
+</button>
+
+</div>
+
+<div class="card">
+<h3>✨ Comment ça marche ?</h3>
+
+<p>1️⃣ Le propriétaire crée son compte.</p>
+<p>2️⃣ Il configure son salon.</p>
+<p>3️⃣ Il ajoute ses services et tarifs.</p>
+<p>4️⃣ Il partage son lien public.</p>
+<p>5️⃣ Les clients réservent directement.</p>
+</div>
+
+</section>
+
+
+<!-- INSCRIPTION -->
+<section id="register" class="page">
+
+<div class="card">
+
+<h2>🏪 Créer mon salon</h2>
+
+<p class="small">
+Créez votre compte propriétaire.
+</p>
+
+<input id="rn" placeholder="Nom du propriétaire">
+
+<input id="re"
+type="email"
+placeholder="Adresse e-mail">
+
+<input id="rp"
+type="password"
+placeholder="Mot de passe">
+
+<button class="green" onclick="register()">
+Créer mon compte
+</button>
+
+<button class="gray" onclick="show('home')">
+Retour
+</button>
+
+</div>
+
+</section>
+
+
+<!-- CONNEXION PROPRIETAIRE -->
+<section id="login" class="page">
+
+<div class="card">
+
+<h2>💈 Espace Salon</h2>
+
+<p>
+Connectez-vous pour gérer votre salon.
+</p>
+
+<input id="le"
+type="email"
+placeholder="E-mail">
+
+<input id="lp"
+type="password"
+placeholder="Mot de passe">
+
+<button class="blue" onclick="login()">
+Se connecter
+</button>
+
+<button class="green" onclick="show('register')">
+Créer un compte
+</button>
+
+<button class="gray" onclick="show('home')">
+Retour
+</button>
+
+</div>
+
+</section>
+
+
+<!-- CREATION DU SALON -->
+<section id="create" class="page">
+
+<div class="card">
+
+<h2>🏪 Configurer mon salon</h2>
+
+<input id="sn"
+placeholder="Nom du salon">
+
+<input id="sc"
+placeholder="Ville / quartier">
+
+<input id="st"
+placeholder="Téléphone / WhatsApp">
+
+<textarea
+id="sd"
+rows="4"
+placeholder="Description du salon">
+</textarea>
+
+<button class="green" onclick="createSalon()">
+Créer mon salon
+</button>
+
+</div>
+
+</section>
+
+
+<!-- DASHBOARD PROPRIETAIRE -->
+<section id="dash" class="page">
+
+<div class="card">
+
+<h2>💈 Tableau de bord</h2>
+
+<h3 id="ownerSalonName">
+Mon salon
+</h3>
+
+<p id="ownerSalonInfo"></p>
+
+<div class="stat">
+
+<div class="statBox">
+Clients
+<strong id="clientCount">0</strong>
+</div>
+
+<div class="statBox">
+Réservations
+<strong id="reservationCount">0</strong>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- LIEN PUBLIC -->
+
+<div class="card">
+
+<h3>🔗 Mon lien public</h3>
+
+<p>
+Partagez ce lien avec vos clients.
+</p>
+
+<div id="publicLink"
+class="linkbox">
+Chargement...
+</div>
+
+<button class="blue" onclick="copyPublicLink()">
+📋 Copier le lien
+</button>
+
+<button class="green" onclick="sharePublicLink()">
+📲 Partager
+</button>
+
+</div>
+
+
+<!-- SERVICES -->
+
+<div class="card">
+
+<h3>➕ Ajouter un service</h3>
+
+<input
+id="serviceName"
+placeholder="Exemple : Coupe homme">
+
+<input
+id="servicePrice"
+type="number"
+placeholder="Prix en FCFA">
+
+<button class="green" onclick="addService()">
+Ajouter le service
+</button>
+
+<hr>
+
+<h3>💈 Mes services</h3>
+
+<div id="ownerServices">
+Chargement...
+</div>
+
+</div>
+
+
+<!-- RESERVATIONS -->
+
+<div class="card">
+
+<h3>📅 Réservations reçues</h3>
+
+<div id="ownerReservations">
+Chargement...
+</div>
+
+</div>
+
+
+<button class="red"
+onclick="logout()">
+🚪 Déconnexion
+</button>
+
+</section>
+
+
+<!-- ADMIN LOGIN -->
+
+<section id="adminLogin" class="page">
+
+<div class="card">
+
+<h2>🔐 Administration</h2>
+
+<p class="small">
+Cette zone est réservée à l'administrateur.
+</p>
+
+<input
+id="adminEmail"
+type="email"
+value="valentinsomda070@gmail.com"
+readonly>
+
+<input
+id="adminPassword"
+type="password"
+placeholder="Mot de passe administrateur">
+
+<button
+class="blue"
+onclick="adminLogin()">
+Connexion
+</button>
+
+<button class="gray"
+onclick="show('home')">
+Retour
+</button>
+
+</div>
+
+</section>
+
+
+<!-- DASHBOARD ADMIN -->
+
+<section id="adminDash" class="page">
+
+<div class="card">
+
+<h2>👑 Administration</h2>
+
+<p>
+Gestion globale de SalonPro BF
+</p>
+
+<div class="stat">
+
+<div class="statBox">
+Salons
+<strong id="adminSalonCount">0</strong>
+</div>
+
+<div class="statBox">
+Actifs
+<strong id="adminActiveCount">0</strong>
+</div>
+
+<div class="statBox">
+Réservations
+<strong id="adminReservationCount">0</strong>
+</div>
+
+<div class="statBox">
+Services
+<strong id="adminServiceCount">0</strong>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>🏪 Tous les salons</h3>
+
+<div id="adminSalons">
+Chargement...
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>📅 Toutes les réservations</h3>
+
+<div id="adminReservations">
+Chargement...
+</div>
+
+</div>
+
+
+<button
+class="red"
+onclick="logout()">
+🚪 Déconnexion administrateur
+</button>
+
+</section>
+
+
+<!-- PAGE PUBLIQUE DU SALON -->
+
+<section id="public" class="page">
+
+<div class="card center">
+
+<h2 id="publicName">
+Salon
+</h2>
+
+<p id="publicCity"></p>
+
+<p id="publicPhone"></p>
+
+<p id="publicDescription"></p>
+
+</div>
+
+
+<div class="card">
+
+<h3>💈 Nos services</h3>
+
+<div id="publicServices">
+Chargement...
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>📅 Réserver un rendez-vous</h3>
+
+<input
+id="clientName"
+placeholder="Votre nom">
+
+<input
+id="clientPhone"
+placeholder="Votre téléphone">
+
+<select id="clientService">
+<option value="">
+Choisir un service
+</option>
+</select>
+
+<input
+id="clientDate"
+type="date">
+
+<input
+id="clientTime"
+type="time">
+
+<button
+class="green"
+onclick="makeReservation()">
+✅ Confirmer la réservation
+</button>
+
+</div>
+
+<div class="card center">
+
+<button
+class="gray"
+onclick="show('home')">
+🏠 Accueil
+</button>
+
+</div>
+
+</section>
+
+
+</main>
+
+
+<script type="module">
+
+import {
+initializeApp
+} from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getAuth,
+createUserWithEmailAndPassword,
+signInWithEmailAndPassword,
+signOut,
+onAuthStateChanged
+} from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+getFirestore,
+doc,
+setDoc,
+getDoc,
+addDoc,
+deleteDoc,
+collection,
+query,
+where,
+getDocs,
+serverTimestamp
+} from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+/* =========================
+FIREBASE
+========================= */
+
+const firebaseConfig = {
+
+apiKey:
+"AIzaSyCBGq1_Kf5uKx6mSc-hVTB3wBL-RNR5Eug",
+
+authDomain:
+"salon-pro-bf.firebaseapp.com",
+
+projectId:
+"salon-pro-bf",
+
+storageBucket:
+"salon-pro-bf.firebasestorage.app",
+
+messagingSenderId:
+"928496886473",
+
+appId:
+"1:928496886473:web:1b9e9bcbb54f1cd2b22318"
+
+};
+
+
+const app =
+initializeApp(firebaseConfig);
+
+const auth =
+getAuth(app);
+
+const db =
+getFirestore(app);
+
+
+/* =========================
+ADMIN
+========================= */
+
+const ADMIN_EMAIL =
+"valentinsomda070@gmail.com";
+
+
+let currentSalonId = null;
+
+
+/* =========================
+UTILITAIRES
+========================= */
+
+const $ =
+id => document.getElementById(id);
+
+
+window.show =
+function(id){
+
+document
+.querySelectorAll(".page")
+.forEach(
+p => p.classList.remove("active")
+);
+
+$(id).classList.add("active");
+
+window.scrollTo(0,0);
+
+};
+
+
+function message(
+text,
+type="success"
+){
+
+const box = $("msg");
+
+box.textContent = text;
+
+box.style.display = "block";
+
+box.style.background =
+type === "error"
+? "#dc2626"
+: "#15803d";
+
+setTimeout(
+()=>box.style.display="none",
+3500
+);
+
+}
+
+
+/* =========================
+ID SALON
+========================= */
+
+function generateSalonId(){
+
+return "salon_" +
+crypto.randomUUID()
+.replaceAll("-","")
+.slice(0,14);
+
+}
+
+
+/* =========================
+LIEN PUBLIC
+========================= */
+
+function getPublicLink(id){
+
+return location.origin +
+location.pathname +
+"#salon=" +
+encodeURIComponent(id);
+
+}
+
+
+/* =========================
+INSCRIPTION
+========================= */
+
+window.register =
+async function(){
+
+try{
+
+const name =
+$("rn").value.trim();
+
+const email =
+$("re").value.trim();
+
+const password =
+$("rp").value;
+
+
+if(!name || !email || !password){
+
+message(
+"Veuillez remplir tous les champs.",
+"error"
+);
+
+return;
+
+}
+
+
+if(password.length < 6){
+
+message(
+"Le mot de passe doit contenir au moins 6 caractères.",
+"error"
+);
+
+return;
+
+}
+
+
+const credential =
+await createUserWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+
+await setDoc(
+doc(
+db,
+"owners",
+credential.user.uid
+),
+{
+uid:credential.user.uid,
+name:name,
+email:email,
+createdAt:serverTimestamp()
+}
+);
+
+
+message(
+"Compte créé avec succès."
+);
+
+show("create");
+
+
+}catch(error){
+
+console.error(error);
+
+message(
+error.message,
+"error"
+);
+
+}
+
+};
+
+
+/* =========================
+CONNEXION
+========================= */
+
+window.login =
+async function(){
+
+try{
+
+const email =
+$("le").value.trim();
+
+const password =
+$("lp").value;
+
+
+await signInWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+
+}catch(error){
+
+message(
+"Connexion impossible : " +
+error.message,
+"error"
+);
+
+}
+
+};
+
+
+/* =========================
+CREER SALON
+========================= */
+
+window.createSalon =
+async function(){
+
+try{
+
+if(!auth.currentUser){
+
+show("login");
+
+return;
+
+}
+
+
+const name =
+$("sn").value.trim();
+
+const city =
+$("sc").value.trim();
+
+const phone =
+$("st").value.trim();
+
+const description =
+$("sd").value.trim();
+
+
+if(!name || !city || !phone){
+
+message(
+"Nom, ville et téléphone sont obligatoires.",
+"error"
+);
+
+return;
+
+}
+
+
+const id =
+generateSalonId();
+
+
+await setDoc(
+doc(db,"salons",id),
+{
+
+id:id,
+
+name:name,
+
+city:city,
+
+phone:phone,
+
+description:description,
+
+ownerId:
+auth.currentUser.uid,
+
+ownerEmail:
+auth.currentUser.email,
+
+active:true,
+
+createdAt:
+serverTimestamp()
+
+}
+);
+
+
+await setDoc(
+doc(
+db,
+"owners",
+auth.currentUser.uid
+),
+{
+salonId:id
+},
+{
+merge:true
+}
+);
+
+
+currentSalonId = id;
+
+
+message(
+"Salon créé avec succès."
+);
+
+
+await loadOwnerDashboard();
+
+
+}catch(error){
+
+console.error(error);
+
+message(
+"Erreur : " + error.message,
+"error"
+);
+
+}
+
+};
+
+
+/* =========================
+DASHBOARD PROPRIETAIRE
+========================= */
+
+async function loadOwnerDashboard(){
+
+try{
+
+if(!auth.currentUser)
+return;
+
+
+const ownerSnap =
+await getDoc(
+doc(
+db,
+"owners",
+auth.currentUser.uid
+)
+);
+
+
+if(!ownerSnap.exists()){
+
+show("create");
+
+return;
+
+}
+
+
+const owner =
+ownerSnap.data();
+
+
+if(!owner.salonId){
+
+show("create");
+
+return;
+
+}
+
+
+currentSalonId =
+owner.salonId;
+
+
+const salonSnap =
+await getDoc(
+doc(
+db,
+"salons",
+currentSalonId
+)
+);
+
+
+if(!salonSnap.exists()){
+
+message(
+"Salon introuvable.",
+"error"
+);
+
+return;
+
+}
+
+
+const salon =
+salonSnap.data();
+
+
+$("ownerSalonName")
+.textContent =
+salon.name;
+
+
+$("ownerSalonInfo")
+.textContent =
+"📍 " +
+salon.city +
+" • 📞 " +
+salon.phone;
+
+
+$("publicLink")
+.textContent =
+getPublicLink(currentSalonId);
+
+
+await loadOwnerServices();
+
+await loadOwnerReservations();
+
+show("dash");
+
+
+}catch(error){
+
+console.error(error);
+
+message(
+error.message,
+"error"
+);
+
+}
+
+}
+
+
+/* =========================
+SERVICES PROPRIETAIRE
+========================= */
+
+async function loadOwnerServices(){
+
+const box =
+$("ownerServices");
+
+box.innerHTML =
+"Chargement...";
+
+
+const q =
+query(
+collection(db,"services"),
+where(
+"salonId",
+"==",
+currentSalonId
+)
+);
+
+
+const snap =
+await getDocs(q);
+
+
+box.innerHTML = "";
+
+
+if(snap.empty){
+
+box.innerHTML =
+'<div class="empty">Aucun service ajouté.</div>';
+
+return;
+
+}
+
+
+snap.forEach(
+item => {
+
+const data =
+item.data();
+
+
+const div =
+document.createElement("div");
+
+div.className =
+"item";
+
+
+div.innerHTML = `
+
+<strong>💈 ${escapeHTML(data.name)}</strong>
+
+<br>
+
+${escapeHTML(String(data.price))} FCFA
+
+<button
+class="red"
+data-delete="${item.id}">
+🗑 Supprimer
+</button>
+
+`;
+
+
+div
+.querySelector("[data-delete]")
+.addEventListener(
+"click",
+()=>deleteService(item.id)
+);
+
+
+box.appendChild(div);
+
+});
+
+}
+
+
+/* =========================
+AJOUT SERVICE
+========================= */
+
+window.addService =
+async function(){
+
+try{
+
+const name =
+$("serviceName").value.trim();
+
+const price =
+$("servicePrice").value;
+
+
+if(!name || !price){
+
+message(
+"Indiquez le nom et le prix.",
+"error"
+);
+
+return;
+
+}
+
+
+await addDoc(
+collection(db,"services"),
+{
+
+salonId:currentSalonId,
+
+name:name,
+
+price:String(price),
+
+createdAt:
+serverTimestamp()
+
+}
+);
+
+
+$("serviceName").value="";
+
+$("servicePrice").value="";
+
+
+message(
+"Service ajouté."
+);
+
+
+await loadOwnerServices();
+
+
+}catch(error){
+
+message(
+error.message,
+"error"
+);
+
+}
+
+};
+
+
+/* =========================
+SUPPRESSION SERVICE
+========================= */
+
+async function deleteService(id){
+
+if(
+!confirm(
+"Supprimer ce service ?"
+)
+)return;
+
+
+try{
+
+await deleteDoc(
+doc(
+db,
+"services",
+id
+)
+);
+
+
+message(
+"Service supprimé."
+);
+
+
+await loadOwnerServices();
+
+
+}catch(error){
+
+message(
+error.message,
+"error"
+);
+
+}
+
+}
+
+
+/* =========================
+RESERVATIONS PROPRIETAIRE
+========================= */
+
+async function loadOwnerReservations(){
+
+const box =
+$("ownerReservations");
+
+box.innerHTML =
+"Chargement...";
+
+
+const q =
+query(
+collection(db,"reservations"),
+where(
+"salonId",
+"==",
+currentSalonId
+)
+);
+
+
+const snap =
+await getDocs(q);
+
+
+box.innerHTML = "";
+
+
+let count = 0;
+
+const clients =
+new Set();
+
+
+if(snap.empty){
+
+box.innerHTML =
+'<div class="empty">Aucune réservation.</div>';
+
+$("reservationCount").textContent =
+"0";
+
+$("clientCount").textContent =
+"0";
+
+return;
+
+}
+
+
+snap.forEach(
+item => {
+
+count++;
+
+
+const data =
+item.data();
+
+
+if(data.clientPhone)
+clients.add(
+data.clientPhone
+);
+
+
+const div =
+document.createElement("div");
+
+div.className =
+"item";
+
+
+div.innerHTML = `
+
+<strong>👤 ${escapeHTML(data.clientName)}</strong>
+
+<br>
+
+📞 ${escapeHTML(data.clientPhone)}
+
+<br>
+
+💈 ${escapeHTML(data.serviceName || "Service")}
+
+<br>
+
+📅 ${escapeHTML(data.date)}
+ à
+${escapeHTML(data.time)}
+
+<br>
+
+<span class="badge on">
+${escapeHTML(data.status || "pending")}
+</span>
+
+`;
+
+
+box.appendChild(div);
+
+});
+
+
+$("reservationCount")
+.textContent =
+count;
+
+$("clientCount")
+.textContent =
+clients.size;
+
+}
+
+
+/* =========================
+COPIER LIEN
+========================= */
+
+window.copyPublicLink =
+async function(){
+
+try{
+
+await navigator.clipboard.writeText(
+getPublicLink(currentSalonId)
+);
+
+message(
+"Lien copié !"
+);
+
+}catch{
+
+message(
+"Impossible de copier automatiquement.",
+"error"
+);
+
+}
+
+};
+
+
+/* =========================
+PARTAGER
+========================= */
+
+window.sharePublicLink =
+async function(){
+
+const url =
+getPublicLink(currentSalonId);
+
+
+if(navigator.share){
+
+await navigator.share({
+
+title:"Mon salon sur SalonPro BF",
+
+text:"Découvrez mon salon et réservez votre rendez-vous.",
+
+url:url
+
+});
+
+}else{
+
+await copyPublicLink();
+
+}
+
+};
+
+
+/* =========================
+ADMIN LOGIN
+========================= */
+
+window.adminLogin =
+async function(){
+
+try{
+
+const email =
+$("adminEmail")
+.value
+.trim();
+
+const password =
+$("adminPassword")
+.value;
+
+
+if(
+email.toLowerCase()
+!==
+ADMIN_EMAIL.toLowerCase()
+){
+
+message(
+"Compte administrateur non autorisé.",
+"error"
+);
+
+return;
+
+}
+
+
+await signInWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+
+}catch(error){
+
+message(
+"Connexion administrateur impossible.",
+"error"
+);
+
+}
+
+};
+
+
+/* =========================
+ADMIN DASHBOARD
+========================= */
+
+async function loadAdminDashboard(){
+
+if(!auth.currentUser)
+return;
+
+
+if(
+auth.currentUser.email
+.toLowerCase()
+!==
+ADMIN_EMAIL.toLowerCase()
+){
+
+message(
+"Accès administrateur refusé.",
+"error"
+);
+
+return;
+
+}
+
+
+await loadAdminSalons();
+
+await loadAdminReservations();
+
+show("adminDash");
+
+}
+
+
+/* =========================
+ADMIN SALONS
+========================= */
+
+async function loadAdminSalons(){
+
+const box =
+$("adminSalons");
+
+box.innerHTML =
+"Chargement...";
+
+
+const snap =
+await getDocs(
+collection(db,"salons")
+);
+
+
+box.innerHTML = "";
+
+
+let total = 0;
+
+let active = 0;
+
+
+if(snap.empty){
+
+box.innerHTML =
+'<div class="empty">Aucun salon.</div>';
+
+return;
+
+}
+
+
+snap.forEach(
+item => {
+
+total++;
+
+
+const data =
+item.data();
+
+
+if(data.active)
+active++;
+
+
+const div =
+document.createElement("div");
+
+div.className =
+"item";
+
+
+const status =
+data.active
+? '<span class="badge on">ACTIF</span>'
+: '<span class="badge off">DÉSACTIVÉ</span>';
+
+
+div.innerHTML = `
+
+<strong>💈 ${escapeHTML(data.name)}</strong>
+
+<br>
+
+📍 ${escapeHTML(data.city)}
+
+<br>
+
+📞 ${escapeHTML(data.phone)}
+
+<br>
+
+📧 ${escapeHTML(data.ownerEmail || "")}
+
+<br>
+
+${status}
+
+<button
+class="${data.active ? "orange" : "green"}"
+data-toggle="${item.id}">
+${data.active ? "⛔ Désactiver" : "✅ Activer"}
+</button>
+
+<button
+class="blue"
+data-open="${item.id}">
+🔗 Voir le salon
+</button>
+
+`;
+
+
+div
+.querySelector("[data-toggle]")
+.addEventListener(
+"click",
+()=>toggleSalon(
+item.id,
+data.active
+)
+);
+
+
+div
+.querySelector("[data-open]")
+.addEventListener(
+"click",
+()=>openPublicSalon(
+item.id
+)
+);
+
+
+box.appendChild(div);
+
+});
+
+
+$("adminSalonCount")
+.textContent =
+total;
+
+$("adminActiveCount")
+.textContent =
+active;
+
+}
+
+
+/* =========================
+ACTIVER / DESACTIVER
+========================= */
+
+async function toggleSalon(
+id,
+active
+){
+
+try{
+
+await setDoc(
+doc(db,"salons",id),
+{
+active:!active
+},
+{
+merge:true
+}
+);
+
+
+message(
+active
+? "Salon désactivé."
+: "Salon activé."
+);
+
+
+await loadAdminSalons();
+
+
+}catch(error){
+
+message(
+error.message,
+"error"
+);
+
+}
+
+}
+
+
+/* =========================
+ADMIN RESERVATIONS
+========================= */
+
+async function loadAdminReservations(){
+
+const box =
+$("adminReservations");
+
+box.innerHTML =
+"Chargement...";
+
+
+const snap =
+await getDocs(
+collection(db,"reservations")
+);
+
+
+box.innerHTML = "";
+
+
+if(snap.empty){
+
+box.innerHTML =
+'<div class="empty">Aucune réservation.</div>';
+
+$("adminReservationCount")
+.textContent="0";
+
+return;
+
+}
+
+
+let count=0;
+
+
+for(
+const item of snap.docs
+){
+
+count++;
+
+
+const data =
+item.data();
+
+
+let salonName =
+"Salon";
+
+
+try{
+
+const salonSnap =
+await getDoc(
+doc(
+db,
+"salons",
+data.salonId
+)
+);
+
+
+if(salonSnap.exists())
+salonName =
+salonSnap.data().name;
+
+}catch{}
+
+
+const div =
+document.createElement("div");
+
+div.className =
+"item";
+
+
+div.innerHTML = `
+
+<strong>
+🏪 ${escapeHTML(salonName)}
+</strong>
+
+<br>
+
+👤 ${escapeHTML(data.clientName)}
+
+<br>
+
+📞 ${escapeHTML(data.clientPhone)}
+
+<br>
+
+💈 ${escapeHTML(data.serviceName || "")}
+
+<br>
+
+📅 ${escapeHTML(data.date)}
+ à
+${escapeHTML(data.time)}
+
+`;
+
+
+box.appendChild(div);
+
+}
+
+
+$("adminReservationCount")
+.textContent =
+count;
+
+
+/* SERVICES */
+
+const services =
+await getDocs(
+collection(db,"services")
+);
+
+
+$("adminServiceCount")
+.textContent =
+services.size;
+
+}
+
+
+/* =========================
+OUVRIR SALON PUBLIC
+========================= */
+
+async function openPublicSalon(id){
+
+history.pushState(
+{},
+"",
+"#salon=" +
+encodeURIComponent(id)
+);
+
+await loadPublicSalon(id);
+
+}
+
+
+/* =========================
+PAGE PUBLIQUE
+========================= */
+
+async function loadPublicSalon(id){
+
+try{
+
+const salonSnap =
+await getDoc(
+doc(
+db,
+"salons",
+id
+)
+);
+
+
+if(!salonSnap.exists()){
+
+message(
+"Salon introuvable.",
+"error"
+);
+
+show("home");
+
+return;
+
+}
+
+
+const salon =
+salonSnap.data();
+
+
+if(salon.active === false){
+
+$("publicName")
+.textContent =
+"Salon temporairement indisponible";
+
+$("publicCity")
+.textContent =
+"Ce salon n'accepte actuellement pas de réservations.";
+
+$("publicPhone")
+.textContent="";
+
+$("publicDescription")
+.textContent="";
+
+$("publicServices")
+.innerHTML =
+'<div class="empty">Salon désactivé.</div>';
+
+$("clientService").innerHTML =
+'<option value="">Indisponible</option>';
+
+show("public");
+
+return;
+
+}
+
+
+$("publicName")
+.textContent =
+salon.name;
+
+
+$("publicCity")
+.textContent =
+"📍 " + salon.city;
+
+
+$("publicPhone")
+.textContent =
+"📞 " + salon.phone;
+
+
+$("publicDescription")
+.textContent =
+salon.description || "";
+
+
+const services =
+await getDocs(
+query(
+collection(db,"services"),
+where(
+"salonId",
+"==",
+id
+)
+)
+);
+
+
+$("publicServices")
+.innerHTML="";
+
+$("clientService").innerHTML =
+'<option value="">Choisir un service</option>';
+
+
+if(services.empty){
+
+$("publicServices").innerHTML =
+'<div class="empty">Aucun service disponible.</div>';
+
+}else{
+
+services.forEach(
+item=>{
+
+const data =
+item.data();
+
+
+const div =
+document.createElement("div");
+
+div.className =
+"item";
+
+
+div.innerHTML = `
+
+<strong>
+💈 ${escapeHTML(data.name)}
+</strong>
+
+<br>
+
+💰 ${escapeHTML(String(data.price))}
+ FCFA
+
+`;
+
+
+$("publicServices")
+.appendChild(div);
+
+
+const option =
+document.createElement("option");
+
+
+option.value =
+item.id;
+
+
+option.textContent =
+data.name +
+" - " +
+data.price +
+" FCFA";
+
+
+$("clientService")
+.appendChild(option);
+
+});
+
+}
+
+
+show("public");
+
+
+}catch(error){
+
+console.error(error);
+
+message(
+"Impossible de charger ce salon.",
+"error"
+);
+
+}
+
+}
+
+
+/* =========================
+RESERVATION CLIENT
+========================= */
+
+window.makeReservation =
+async function(){
+
+try{
+
+const hashId =
+getSalonFromHash();
+
+
+if(!hashId){
+
+message(
+"Salon introuvable.",
+"error"
+);
+
+return;
+
+}
+
+
+const name =
+$("clientName")
+.value.trim();
+
+const phone =
+$("clientPhone")
+.value.trim();
+
+const serviceId =
+$("clientService").value;
+
+const date =
+$("clientDate").value;
+
+const time =
+$("clientTime").value;
+
+
+if(
+!name ||
+!phone ||
+!serviceId ||
+!date ||
+!time
+){
+
+message(
+"Veuillez remplir tous les champs.",
+"error"
+);
+
+return;
+
+}
+
+
+const salonSnap =
+await getDoc(
+doc(
+db,
+"salons",
+hashId
+)
+);
+
+
+if(!salonSnap.exists()){
+
+message(
+"Salon introuvable.",
+"error"
+);
+
+return;
+
+}
+
+
+const salon =
+salonSnap.data();
+
+
+if(salon.active === false){
+
+message(
+"Ce salon est actuellement désactivé.",
+"error"
+);
+
+return;
+
+}
+
+
+const serviceSnap =
+await getDoc(
+doc(
+db,
+"services",
+serviceId
+)
+);
+
+
+if(!serviceSnap.exists()){
+
+message(
+"Service introuvable.",
+"error"
+);
+
+return;
+
+}
+
+
+const service =
+serviceSnap.data();
+
+
+if(service.salonId !== hashId){
+
+message(
+"Service invalide.",
+"error"
+);
+
+return;
+
+}
+
+
+await addDoc(
+collection(db,"reservations"),
+{
+
+salonId:hashId,
+
+serviceId:serviceId,
+
+serviceName:service.name,
+
+clientName:name,
+
+clientPhone:phone,
+
+date:date,
+
+time:time,
+
+status:"pending",
+
+createdAt:
+serverTimestamp()
+
+}
+);
+
+
+$("clientName").value="";
+
+$("clientPhone").value="";
+
+$("clientService").value="";
+
+$("clientDate").value="";
+
+$("clientTime").value="";
+
+
+message(
+"✅ Réservation envoyée avec succès !"
+);
+
+
+}catch(error){
+
+console.error(error);
+
+message(
+"Réservation impossible : " +
+error.message,
+"error"
+);
+
+}
+
+};
+
+
+/* =========================
+HASH
+========================= */
+
+function getSalonFromHash(){
+
+const hash =
+location.hash;
+
+
+if(
+!hash.startsWith("#salon=")
+)
+return null;
+
+
+return decodeURIComponent(
+hash.substring(7)
+);
+
+}
+
+
+/* =========================
+ECHAPPEMENT HTML
+========================= */
+
+function escapeHTML(value){
+
+return String(value || "")
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;");
+
+}
+
+
+/* =========================
+DECONNEXION
+========================= */
+
+window.logout =
+async function(){
+
+await signOut(auth);
+
+currentSalonId=null;
+
+location.hash="";
+
+show("home");
+
+message(
+"Déconnexion effectuée."
+);
+
+};
+
+
+/* =========================
+AUTH STATE
+========================= */
+
+onAuthStateChanged(
+auth,
+async user => {
+
+try{
+
+/* VISITE PUBLIQUE */
+
+const publicId =
+getSalonFromHash();
+
+
+if(
+publicId &&
+(!user ||
+user.email.toLowerCase()
+!==
+ADMIN_EMAIL.toLowerCase())
+){
+
+await loadPublicSalon(publicId);
+
+return;
+
+}
+
+
+/* AUCUN UTILISATEUR */
+
+if(!user){
+
+show("home");
+
+return;
+
+}
+
+
+/* ADMIN */
+
+if(
+user.email &&
+user.email.toLowerCase()
+===
+ADMIN_EMAIL.toLowerCase()
+){
+
+await loadAdminDashboard();
+
+return;
+
+}
+
+
+/* PROPRIETAIRE */
+
+const ownerSnap =
+await getDoc(
+doc(
+db,
+"owners",
+user.uid
+)
+);
+
+
+if(
+ownerSnap.exists() &&
+ownerSnap.data().salonId
+){
+
+await loadOwnerDashboard();
+
+}else{
+
+show("create");
+
+}
+
+}catch(error){
+
+console.error(error);
+
+message(
+error.message,
+"error"
+);
+
+}
+
+});
+
+
+/* =========================
+HASH CHANGE
+========================= */
+
+window.addEventListener(
+"hashchange",
+async()=>{
+
+const id =
+getSalonFromHash();
+
+
+if(id)
+await loadPublicSalon(id);
+
+}
+);
+
+
+/* =========================
+ADMIN DISCRET
+========================= */
+
+/*
+L'espace administrateur n'est pas
+affiché sur l'accueil.
+
+Pour ouvrir la connexion admin,
+utiliser :
+
+#admin
+
+*/
+
+if(location.hash === "#admin"){
+
+show("adminLogin");
+
+}
+
+</script>
+
+</body>
+</html>
